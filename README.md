@@ -2,7 +2,7 @@
 
 ```swift
 
-Meraki.networkId = "MY-NETWORK-ID"
+ Meraki.networkId = "MY-NETWORK-ID"
  Meraki.keysFetcher = {
      // Get from Secrets; eventually from DB
      Credentials(
