@@ -1,6 +1,6 @@
 ### Installation
 
-Setting is available via the [Swift Package Manager](https://developer.apple.com/documentation/swift_packages/adding_package_dependencies_to_your_app). Requires iOS 17.4+ or macOS Ventura and up.
+MerakiKit is available via the [Swift Package Manager](https://developer.apple.com/documentation/swift_packages/adding_package_dependencies_to_your_app). Requires iOS 17.4+ or macOS Ventura and up.
 
 ```
 https://github.com/Project-Academy/MerakiKit
