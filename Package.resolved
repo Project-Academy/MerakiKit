@@ -1,0 +1,24 @@
+{
+  "originHash" : "0f393421098e32c028f6cabcc515cc992b017d487b96f5a0012174d5f87da492",
+  "pins" : [
+    {
+      "identity" : "presto",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Project-Academy/Presto",
+      "state" : {
+        "branch" : "main",
+        "revision" : "a3b48a78b835e7dca873b2d9cc653e9cbc2fdef6"
+      }
+    },
+    {
+      "identity" : "tapioca",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Project-Academy/Tapioca.git",
+      "state" : {
+        "branch" : "main",
+        "revision" : "03f87f65e236b6f3e47f1d364794e59cc5f562be"
+      }
+    }
+  ],
+  "version" : 3
+}

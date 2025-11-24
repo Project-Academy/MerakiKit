@@ -5,19 +5,43 @@ import PackageDescription
 
 let package = Package(
     name: "MerakiKit",
+    platforms: [
+            .tvOS   (.v18),
+            .iOS    ("17.4"),
+            .macOS  (.v13),
+            .macCatalyst(.v18)
+        ],
     products: [
         // Products define the executables and libraries a package produces, making them visible to other packages.
         .library(
-            name: "MerakiKit",
-            targets: ["MerakiKit"]
+            name: "Meraki",
+            targets: ["Meraki"]
         ),
     ],
+    dependencies: [
+            .Tapioca
+        ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
         // Targets can depend on other targets in this package and products from dependencies.
         .target(
-            name: "MerakiKit"
+            name: "Meraki",
+            dependencies: [
+                .Tapioca
+            ]
         ),
 
     ]
 )
+extension String {
+    static let Presto = "https://github.com/Project-Academy/Presto"
+    static let Tapioca = "https://github.com/Project-Academy/Tapioca.git"
+}
+extension Package.Dependency {
+    static var Presto: Package.Dependency { .package(url: .Presto, branch: "main") }
+    static var Tapioca: Package.Dependency { .package(url: .Tapioca, branch: "main") }
+}
+extension Target.Dependency {
+    static var Presto: Target.Dependency { .product(name: "Presto", package: "Presto") }
+    static var Tapioca: Target.Dependency { .product(name: "Tapioca", package: "Tapioca") }
+}
