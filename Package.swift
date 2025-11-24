@@ -34,14 +34,11 @@ let package = Package(
     ]
 )
 extension String {
-    static let Presto = "https://github.com/Project-Academy/Presto"
     static let Tapioca = "https://github.com/Project-Academy/Tapioca.git"
 }
 extension Package.Dependency {
-    static var Presto: Package.Dependency { .package(url: .Presto, branch: "main") }
-    static var Tapioca: Package.Dependency { .package(url: .Tapioca, branch: "main") }
+    static var Tapioca: Package.Dependency { .package(url: .Tapioca, from: "1.0.0") }
 }
 extension Target.Dependency {
-    static var Presto: Target.Dependency { .product(name: "Presto", package: "Presto") }
     static var Tapioca: Target.Dependency { .product(name: "Tapioca", package: "Tapioca") }
 }
