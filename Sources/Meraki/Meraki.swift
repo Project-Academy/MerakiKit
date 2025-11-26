@@ -8,6 +8,20 @@
 import Foundation
 @_exported import Tapioca
 
+/**
+ MerakiKit consists of two 'features':
+ (1) Managed App Config, and
+ (2) REST API Methods
+ 
+ The Managed App Config allows the app to access the following information **about the current device**:
+ 1. the current device's name: ``Meraki.deviceName``,
+ 2. the current device's serial: ``Meraki.deviceSerial``, and
+ 3. the current device's UDID: ``Meraki.deviceUDID``
+ This is only when the app has been embedded with these properties on the Meraki Dashboard and the profile containing that setting has been pushed to the current device.
+ 
+ The REST API allows you to query the Meraki API (after setting the ``Meraki.networkId`` and adding your ``Meraki.keysFetcher`` implementation).
+ */
+
 @MainActor
 public struct Meraki: Tapioca {
     public typealias R = Request
