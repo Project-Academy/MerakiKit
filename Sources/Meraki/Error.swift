@@ -8,6 +8,8 @@
 import Foundation
 
 public enum MerakiError: Error {
+    case networkIdNotSet
+    case keysFetcherNotImplemented
     case managedAppConfigNotFound
     case noDevicesFound
     case multipleDevicesFound
