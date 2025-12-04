@@ -64,6 +64,18 @@ public struct Device: Decodable {
             .response()
             .asType([Device].self)
     }
+    public static func getThisDevice() async throws -> Device {
+        guard let serial = await Meraki.deviceSerial
+        else { throw MerakiError.managedAppConfigNotFound }
+        
+        let devices = try await get(serials: [serial])
+        guard devices.count > 0
+        else { throw MerakiError.noDevicesFound }
+        guard devices.count == 1,
+              let thisDevice = devices.first
+        else { throw MerakiError.multipleDevicesFound }
+        return thisDevice
+    }
     
     //--------------------------------------
     // MARK: - CODABLE -
