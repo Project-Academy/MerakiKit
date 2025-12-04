@@ -40,12 +40,18 @@ public struct Meraki: Tapioca {
     //--------------------------------------
     public static func preProcess(request: Request) async throws -> Request {
         
+        guard networkId != "MY-NETWORK-ID"
+        else { throw MerakiError.networkIdNotSet }
+        
         // MARK: Auth
         guard let apiKey
         else {
-            let creds = try await keysFetcher?()
-            apiKey = creds?.apiKey
-            if let network = creds?.networkId { networkId = network }
+            guard let keysFetcher
+            else { throw MerakiError.keysFetcherNotImplemented }
+            
+            let creds = try await keysFetcher()
+            apiKey = creds.apiKey
+            if let network = creds.networkId { networkId = network }
             return try await preProcess(request: request)
         }
         
