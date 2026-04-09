@@ -1,5 +1,5 @@
 {
-  "originHash" : "fbc9275f4b6c6cdbca2040d15743cf47474b635be20a13bd48804e4f932b7fdb",
+  "originHash" : "3157fee4397a74631907f61b9408217ae60801e8597270fed04a83e033f0ee2c",
   "pins" : [
     {
       "identity" : "presto",
@@ -15,8 +15,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/Project-Academy/Tapioca.git",
       "state" : {
-        "revision" : "b20e6d4516842c2efa0c63ea68149e25375679a2",
-        "version" : "1.0.1"
+        "branch" : "main",
+        "revision" : "35db2cc405729db562f0ddc1e7f1b081d0cc7261"
       }
     }
   ],
