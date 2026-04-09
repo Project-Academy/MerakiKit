@@ -64,6 +64,7 @@ public struct Device: Decodable {
             .response()
             .asType([Device].self)
     }
+    /// - warning: This requires Managed App Config
     public static func getThisDevice() async throws -> Device {
         guard let serial = await Meraki.deviceSerial
         else { throw MerakiError.managedAppConfigNotFound }
