@@ -66,7 +66,7 @@ public struct Meraki: Tapioca {
     }
     
     public static func postProcess(response: Presto.Response, from request: Request) async throws -> Presto.Response {
-        var response = response
+        let response = response
         
         // MARK: Error Handling
         guard let statusCode = response.statusCode
