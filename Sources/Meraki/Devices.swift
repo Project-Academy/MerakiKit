@@ -35,8 +35,7 @@ public struct Device: Decodable {
     public var storage: Int?
     
     public var hasLockedUsername: Bool {
-        guard let notes else { return false }
-        return notes.contains("<username:")
+        lockedUsername != nil
     }
     public var lockedUsername: String? {
         guard let notes else { return nil }
@@ -45,7 +44,10 @@ public struct Device: Decodable {
         else { return nil }
         let uNameStart = uNameRange.upperBound
         let uNameEnd = endRange.lowerBound
-        return String(notes[uNameStart..<uNameEnd]).trimmingCharacters(in: .whitespaces)
+        let username = String(notes[uNameStart..<uNameEnd]).trimmingCharacters(in: .whitespaces)
+        // An empty `<username:>` tag is not a lock — treat it as no locked username
+        // so the login field stays editable.
+        return username.isEmpty ? nil : username
     }
     
     //--------------------------------------

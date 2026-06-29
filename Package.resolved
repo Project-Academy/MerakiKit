@@ -1,13 +1,13 @@
 {
-  "originHash" : "3157fee4397a74631907f61b9408217ae60801e8597270fed04a83e033f0ee2c",
+  "originHash" : "9ec9d290bf8c6976c0a8823dc51485f9589eb917228ee7278b2913af0e48f23e",
   "pins" : [
     {
       "identity" : "tapioca",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/Project-Academy/Tapioca.git",
       "state" : {
-        "branch" : "main",
-        "revision" : "58b27ea68ac120387822e983e0ba460219c76d2a"
+        "revision" : "58b27ea68ac120387822e983e0ba460219c76d2a",
+        "version" : "1.1.0"
       }
     }
   ],
