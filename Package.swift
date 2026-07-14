@@ -10,6 +10,12 @@ let package = Package(
         .tvOS("26.0"),
         .macCatalyst(.v18)
     ],
+    products: [
+        .library(
+            name: "Meraki",
+            targets: ["Meraki"]
+        ),
+    ],
     dependencies: [
             .Tapioca
         ],
