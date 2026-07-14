@@ -44,10 +44,11 @@ public struct Device: Decodable {
         else { return nil }
         let uNameStart = uNameRange.upperBound
         let uNameEnd = endRange.lowerBound
-        let username = String(notes[uNameStart..<uNameEnd]).trimmingCharacters(in: .whitespaces)
-        // An empty `<username:>` tag is not a lock — treat it as no locked username
-        // so the login field stays editable.
-        return username.isEmpty ? nil : username
+        // An empty `<username:>` tag IS a lock — to nobody. The device is pinned and
+        // no one may log in on it (the login screen says so). Only the ABSENCE of the
+        // tag means "not locked"; returning nil here would have made those devices
+        // free-text, which is the opposite of what the tag is for.
+        return String(notes[uNameStart..<uNameEnd]).trimmingCharacters(in: .whitespaces)
     }
     
     //--------------------------------------
