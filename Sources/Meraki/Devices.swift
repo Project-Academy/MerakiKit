@@ -107,23 +107,49 @@ public struct Device: Decodable {
             .response()
             .asType([Device].self)
     }
+    /**
+     Devices by serial.
+
+     Serial matching is EXACT but case-INSENSITIVE, and a prefix matches
+     nothing — so a truncated serial can never return the wrong device.
+     Comma-joining is the right encoding: `serials[]=A,B` and repeated
+     `serials[]=A&serials[]=B` both return two devices (verified
+     2026-07-25 against the live org).
+
+     Blank entries are dropped, and an all-blank list returns nothing
+     rather than calling. An empty `serials[]` value does NOT mean "no
+     matches" to this endpoint — it means *no filter*, so the call comes
+     back with every device in the network. That is a page of ~1000
+     records returned in answer to a question about one device, and it
+     reaches the caller as `multipleDevicesFound`, which reads like a
+     duplicate-serial fault rather than "you passed me nothing".
+     */
     public static func get(serials: [String]) async throws -> [Device] {
-        try await DevicesAPI.list.GET
+        let wanted = serials
+            .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
+            .filter { !$0.isEmpty }
+        guard !wanted.isEmpty else { return [] }
+
+        return try await DevicesAPI.list.GET
             .params(["fields[]": Device.requestedFields,
-                     "serials[]": serials.joined(separator: ",")])
+                     "serials[]": wanted.joined(separator: ",")])
             .response()
             .asType([Device].self)
     }
     /// - warning: This requires Managed App Config
     public static func getThisDevice() async throws -> Device {
-        guard let serial = await Meraki.deviceSerial
+        guard let serial = await Meraki.deviceSerial?
+            .trimmingCharacters(in: .whitespacesAndNewlines),
+              !serial.isEmpty
         else { throw MerakiError.managedAppConfigNotFound }
-        
+
         let devices = try await get(serials: [serial])
-        guard devices.count > 0
+        // Empty and duplicate are separate answers: not enrolled is an
+        // ordinary state, two records for one serial is a stale
+        // re-enrolment nobody has cleaned up.
+        guard let thisDevice = devices.first
         else { throw MerakiError.noDevicesFound }
-        guard devices.count == 1,
-              let thisDevice = devices.first
+        guard devices.count == 1
         else { throw MerakiError.multipleDevicesFound }
         return thisDevice
     }
