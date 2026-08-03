@@ -41,12 +41,12 @@ public struct MerakiDeviceLock: Sendable {
     /// An empty `<username:>` tag (locked to NOBODY) surfaces as the empty
     /// string — callers that must distinguish it already can.
     ///
-    /// The app must have configured `Meraki.networkId`/`Meraki.keysFetcher`
-    /// (from its referenced `Secrets.swift`) before the first read — there is
-    /// no plist fallback. (2.3.0's `configureFromInfoPlist` never actually
-    /// configured: its guard tested `isEmpty` against a default that is never
-    /// empty, so every request threw and the lock served last-known = nil.
-    /// Deleted rather than fixed — secrets live in code, not Info.plists.)
+    /// The app must configure `Meraki.networkId`/`Meraki.keysFetcher` before
+    /// the first read — the kit never sources credentials itself. (2.3.0's
+    /// `configureFromInfoPlist` never actually configured: its guard tested
+    /// `isEmpty` against a default that is never empty, so every request
+    /// threw and the lock served last-known = nil. Deleted rather than fixed
+    /// — where credentials live is the app's business, not the kit's.)
     public func currentLockedUsername() async -> String? {
         guard await UIDevice.current.userInterfaceIdiom == .pad else { return nil }
         return await cache.lockedUsername(freshFor: freshness)
