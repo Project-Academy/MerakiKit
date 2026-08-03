@@ -37,33 +37,23 @@ public struct MerakiDeviceLock: Sendable {
         self.freshness = freshness
     }
 
-    /**
-     Reads Meraki credentials from the app's Info.plist `Secrets.Meraki`
-     dict (the `Secrets.xcconfig` path — NOT an app's gitignored
-     `Secrets.swift`, which exists on one machine only) and configures
-     MerakiKit once. Safe to call repeatedly.
-     */
-    @MainActor public static func configureFromInfoPlist() {
-        guard Meraki.networkId.isEmpty else { return }
-        let secrets = Bundle.main.object(forInfoDictionaryKey: "Secrets") as? [String: Any]
-        let plist = secrets?["Meraki"] as? [String: Any] ?? [:]
-        Meraki.networkId = plist["Network"] as? String ?? ""
-        let apiKey = plist["APIKey"] as? String ?? ""
-        Meraki.keysFetcher = { Credentials(apiKey: apiKey) }
-    }
-
     /// The current locked username; nil = not pinned (or nothing known yet).
     /// An empty `<username:>` tag (locked to NOBODY) surfaces as the empty
     /// string — callers that must distinguish it already can.
+    ///
+    /// The app must have configured `Meraki.networkId`/`Meraki.keysFetcher`
+    /// (from its referenced `Secrets.swift`) before the first read — there is
+    /// no plist fallback. (2.3.0's `configureFromInfoPlist` never actually
+    /// configured: its guard tested `isEmpty` against a default that is never
+    /// empty, so every request threw and the lock served last-known = nil.
+    /// Deleted rather than fixed — secrets live in code, not Info.plists.)
     public func currentLockedUsername() async -> String? {
         guard await UIDevice.current.userInterfaceIdiom == .pad else { return nil }
-        await Self.configureFromInfoPlist()
         return await cache.lockedUsername(freshFor: freshness)
     }
 
     public func deviceSerialDisplay() async -> String? {
-        await Self.configureFromInfoPlist()
-        return await Meraki.deviceSerial
+        await Meraki.deviceSerial
     }
 
     /// Serialises the fetch and holds the last good device. The non-Sendable
